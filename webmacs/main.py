@@ -125,6 +125,9 @@ def parse_args(argv=None):
                         default="critical",
                         choices=("info", "warning", "error", "critical"))
 
+    parser.add_argument("-p", "--profile", default="default",
+                        help="Create or reuse a named webmacs profile.")
+
     parser.add_argument("-i", "--instance", default="default",
                         help="Create or reuse a named webmacs instance."
                         " If the given instance name is the empty string, an"
@@ -276,7 +279,7 @@ def main():
         # the x11 property WM_CLASS.
         "webmacs" if opts.instance == "default"
         else "webmacs-%s" % opts.instance
-    ], instance_name=opts.instance)
+    ], opts.profile, instance_name=opts.instance)
     server = IpcServer(opts.instance)
     atexit.register(server.cleanup)
 

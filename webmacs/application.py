@@ -28,7 +28,7 @@ from . import require
 from . import version
 from .adblock import Adblocker, AdblockUpdateRunner, adblock_urls_rules
 from .download_manager import DownloadManager
-from .profile import default_profile
+from .profile import Profile
 from .minibuffer.right_label import init_minibuffer_right_labels
 from .keyboardhandler import LOCAL_KEYMAP_SETTER
 from .spell_checking import SpellCheckingUpdateRunner, \
@@ -116,9 +116,10 @@ def _app_requires():
 class Application(QApplication):
     INSTANCE = None
 
-    def __init__(self, conf_path, args, instance_name="default"):
+    def __init__(self, conf_path, args, profile_name="default", instance_name="default"):
         QApplication.__init__(self, args)
         self.__class__.INSTANCE = self
+        self.profile_name = profile_name
         self.instance_name = instance_name
 
         if (version.opengl_vendor() == 'nouveau' and
@@ -146,7 +147,7 @@ class Application(QApplication):
 
         self._download_manager = DownloadManager(self)
 
-        self.profile = default_profile()
+        self.profile = Profile(self.profile_name)
         self.profile.enable(self)
 
         settings = QWebEngineSettings.globalSettings()

@@ -126,7 +126,3 @@ class Profile(object):
         self.q_profile.scripts().insert(script)
 
         inject_js(os.path.join(THIS_DIR, "scripts", "autofill.js"))
-
-
-def default_profile():
-    return Profile("default")
